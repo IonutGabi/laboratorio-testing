@@ -46,14 +46,17 @@ describe('ConfirmationDialogComponent', () => {
       children: 'Foo',
     };
     // Act
-    render(<ConfirmationDialogComponent {...props} />);
+    const { unmount } = render(<ConfirmationDialogComponent {...props} />);
 
     const cancelButtonElement = screen.getByRole('button', {
       name: props.labels.closeButton,
     });
+    const dialogModal = screen.getByRole('dialog');
     await userEvent.click(cancelButtonElement);
+    unmount();
     // Assert
     expect(props.onClose).toHaveBeenCalled();
+    expect(dialogModal).not.toBeInTheDocument();
   });
 
   it('Should hidden the dialog modal when the user click on the accept button', async () => {
@@ -67,16 +70,19 @@ describe('ConfirmationDialogComponent', () => {
       children: 'Foo',
     };
     // Act
-    render(<ConfirmationDialogComponent {...props} />);
+    const { unmount } = render(<ConfirmationDialogComponent {...props} />);
 
     const acceptButtonElement = screen.getByRole('button', {
       name: props.labels.acceptButton,
     });
 
-    await userEvent.click(acceptButtonElement);
+    const dialogModal = screen.getByRole('dialog');
 
+    await userEvent.click(acceptButtonElement);
+    unmount();
     // Assert
     expect(props.onAccept).toHaveBeenCalled();
     expect(props.onClose).toHaveBeenCalled();
+    expect(dialogModal).not.toBeInTheDocument();
   });
 });
