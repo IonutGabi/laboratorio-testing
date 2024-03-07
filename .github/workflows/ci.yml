@@ -1,0 +1,23 @@
+name: CI Tests
+
+on: pull_request
+
+jobs:
+  ci-unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: Install
+        run: npm ci
+      - name: Unit Tests
+        run: npm test
+  ci-e2e-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: Install
+        run: npm ci
+      - name: E2E Tests
+        run: npm run test:e2e:ci
